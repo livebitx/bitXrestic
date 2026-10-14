@@ -112,16 +112,16 @@ $log.Add_LinkClicked({param($sender,$event)
  }catch{Log ('ERROR: '+$_.Exception.Message)}
 })
 $about.Add_Click({
- $dialog=New-Object Windows.Forms.Form;$dialog.Text='About bitXrestic';$dialog.ClientSize=New-Object Drawing.Size(490,305);$dialog.StartPosition='CenterParent';$dialog.FormBorderStyle='FixedDialog';$dialog.MaximizeBox=$false;$dialog.MinimizeBox=$false;$dialog.ShowInTaskbar=$false;$dialog.Icon=$form.Icon
- $info=New-Object Windows.Forms.Label;$info.Location=New-Object Drawing.Point(20,20);$info.Size=New-Object Drawing.Size(450,125)
- $info.Text="bitXrestic 0.3.9`r`nBy livebitx`r`n`r`nExport restic backups from a selected date into one ZIP.`r`nFiles keep their original paths under each host.`r`nPowered by restic (BSD-2-Clause).";$dialog.Controls.Add($info)
- $link=New-Object Windows.Forms.LinkLabel;$link.Text='github.com/livebitx/bitXrestic';$link.Location=New-Object Drawing.Point(20,150);$link.AutoSize=$true;$dialog.Controls.Add($link)
+ $dialog=New-Object Windows.Forms.Form;$dialog.Text='About bitXrestic';$dialog.ClientSize=New-Object Drawing.Size(490,260);$dialog.StartPosition='CenterParent';$dialog.FormBorderStyle='FixedDialog';$dialog.MaximizeBox=$false;$dialog.MinimizeBox=$false;$dialog.ShowInTaskbar=$false;$dialog.Icon=$form.Icon
+ $info=New-Object Windows.Forms.Label;$info.Location=New-Object Drawing.Point(20,20);$info.Size=New-Object Drawing.Size(450,95)
+ $info.Text="bitXrestic 0.3.9`r`n`r`nExport restic backups from a selected date into one ZIP.`r`nFiles keep their original paths under each host.`r`nPowered by restic (BSD-2-Clause).";$dialog.Controls.Add($info)
+ $link=New-Object Windows.Forms.LinkLabel;$link.Text='github.com/livebitx/bitXrestic';$link.Location=New-Object Drawing.Point(20,115);$link.AutoSize=$true;$dialog.Controls.Add($link)
  $link.Add_LinkClicked({[void][Diagnostics.Process]::Start('https://github.com/livebitx/bitXrestic')})
- $site=New-Object Windows.Forms.LinkLabel;$site.Text='bitx.ro';$site.Location=New-Object Drawing.Point(20,180);$site.AutoSize=$true;$dialog.Controls.Add($site)
+ $site=New-Object Windows.Forms.LinkLabel;$site.Text='bitx.ro';$site.Location=New-Object Drawing.Point(20,145);$site.AutoSize=$true;$dialog.Controls.Add($site)
  $site.Add_LinkClicked({[void][Diagnostics.Process]::Start('https://bitx.ro')})
- $support=New-Object Windows.Forms.LinkLabel;$support.Text='Support via Revolut';$support.Location=New-Object Drawing.Point(20,210);$support.AutoSize=$true;$dialog.Controls.Add($support)
+ $support=New-Object Windows.Forms.LinkLabel;$support.Text='Support via Revolut';$support.Location=New-Object Drawing.Point(20,175);$support.AutoSize=$true;$dialog.Controls.Add($support)
  $support.Add_LinkClicked({[void][Diagnostics.Process]::Start('https://revolut.me/bin')})
- $close=New-Object Windows.Forms.Button;$close.Text='Close';$close.Location=New-Object Drawing.Point(370,255);$close.DialogResult='OK';$dialog.Controls.Add($close);$dialog.AcceptButton=$close;$dialog.CancelButton=$close
+ $close=New-Object Windows.Forms.Button;$close.Text='Close';$close.Location=New-Object Drawing.Point(370,215);$close.DialogResult='OK';$dialog.Controls.Add($close);$dialog.AcceptButton=$close;$dialog.CancelButton=$close
  try{[void]$dialog.ShowDialog($form)}finally{$dialog.Dispose()}
 })
 $stop.Add_Click({$script:cancel=$true})
