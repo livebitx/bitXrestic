@@ -1,0 +1,38 @@
+name: Build Windows
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download official restic
+        shell: python
+        run: |
+          import bz2, pathlib, urllib.request
+          url = 'https://github.com/restic/restic/releases/download/v0.19.1/restic_0.19.1_windows_amd64.bz2'
+          raw = urllib.request.urlopen(url, timeout=120).read()
+          pathlib.Path('restic.exe').write_bytes(bz2.decompress(raw))
+          url = 'https://raw.githubusercontent.com/restic/restic/v0.19.1/LICENSE'
+          pathlib.Path('RESTIC-LICENSE.txt').write_bytes(urllib.request.urlopen(url, timeout=60).read())
+      - name: Test and compile
+        shell: powershell
+        run: |
+          & ([ScriptBlock]::Create([IO.File]::ReadAllText((Join-Path (Get-Location) 'TestCore.ps1'))))
+          if ($LASTEXITCODE -and $LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $compiler = Join-Path $env:WINDIR 'Microsoft.NET\Framework64\v4.0.30319\csc.exe'
+          & $compiler /nologo /target:winexe /reference:System.Windows.Forms.dll /win32icon:bitXrestic.ico /resource:bitXrestic.ico,bitXrestic.ico /resource:restic.exe,restic.exe /resource:Export.ps1,Export.ps1 /out:bitXrestic.exe Launcher.cs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bitXrestic-0.3.9-Windows
+          path: |
+            bitXrestic.exe
+            RESTIC-LICENSE.txt
+            README.md
+          if-no-files-found: error

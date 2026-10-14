@@ -1,7 +1,7 @@
 # bitXrestic
 
 Windows desktop tool to export one day of restic backups into a single ZIP.
-Current version: **0.3.8**.
+Current version: **0.3.9**.
 
 ## Features
 
@@ -11,6 +11,7 @@ Current version: **0.3.8**.
 - Duplicate paths combined only when content and attributes match; conflicts stop publication.
 - Optional password reuse, enabled by default. Passwords are not saved.
 - Temporary exports removed after success; retained after interruption for resuming.
+- About dialog with version and repository link.
 - English interface, fixed window size, custom icons, colored messages and destination links.
 
 ## Build locally
