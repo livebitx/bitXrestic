@@ -16,10 +16,13 @@ jobs:
       - name: Download official restic
         shell: python
         run: |
-          import bz2, pathlib, urllib.request
-          url = 'https://github.com/restic/restic/releases/download/v0.19.1/restic_0.19.1_windows_amd64.bz2'
+          import io, zipfile, hashlib, pathlib, urllib.request
+          url = 'https://github.com/restic/restic/releases/download/v0.19.1/restic_0.19.1_windows_amd64.zip'
           raw = urllib.request.urlopen(url, timeout=120).read()
-          pathlib.Path('restic.exe').write_bytes(bz2.decompress(raw))
+          assert hashlib.sha256(raw).hexdigest() == 'da948ad707ed690426473aaba2046cd61f8f90f6f0e7dab6be0d5796531de67d', 'restic archive checksum mismatch'
+          with zipfile.ZipFile(io.BytesIO(raw)) as archive:
+              binary = next(n for n in archive.namelist() if n.lower().endswith('.exe'))
+              pathlib.Path('restic.exe').write_bytes(archive.read(binary))
           url = 'https://raw.githubusercontent.com/restic/restic/v0.19.1/LICENSE'
           pathlib.Path('RESTIC-LICENSE.txt').write_bytes(urllib.request.urlopen(url, timeout=60).read())
       - name: Test and compile
